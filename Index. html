@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KESA - Premium Kids Book Store</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="global-announcement-bar" class="announcement-bar" style="display: none;">
+        <span id="announcement-text">🔥 New amazing book just arrived! Refresh to explore.</span>
+        <button class="close-announcement-btn" onclick="closeAnnouncement()">&times;</button>
+    </div>
+
+    <header>
+        <div class="logo" id="kesa-logo" style="cursor: pointer; user-select: none;">KESA</div>
+        <div class="nav-right">
+            <button class="track-btn" onclick="toggleTrackingModal()">📦 Track Order</button>
+            <div class="cart-icon-container" onclick="toggleCartModal()">
+                <span class="cart-icon">🛒</span>
+                <span id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h1>Welcome to <span>KESA Kids Books</span></h1>
+            <p>Explore magical stories, interactive learning, and educational wonderlands crafted beautifully for young minds.</p>
+        </section>
+
+        <section class="products-container" id="products-grid">
+            <div class="loading">Loading children's book collections...</div>
+        </section>
+    </main>
+
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeOrderModal()">&times;</span>
+            
+            <div class="slider-container">
+                <div class="slider" id="modal-slider"></div>
+                <button class="slider-btn prev" onclick="moveSlider(-1)">&#10094;</button>
+                <button class="slider-btn next" onclick="moveSlider(1)">&#10095;</button>
+                
+                <div class="zoom-lock-badge" onclick="toggleZoomMode()">
+                    <span id="zoom-icon">🔍</span> <span id="zoom-text">Click to Zoom</span>
+                </div>
+            </div>
+
+            <div id="product-detail-info"></div>
+            
+            <form id="order-form">
+                <div id="user-details-section">
+                    <input type="text" id="cust-name" placeholder="Your Full Name" required>
+                    <input type="tel" id="cust-phone" placeholder="Contact Phone Number" required>
+                    <textarea id="cust-address" placeholder="Complete Delivery Address (with PIN Code)" required></textarea>
+                    
+                    <div class="quantity-container">
+                        <label for="prod-qty">Select Quantity:</label>
+                        <input type="number" id="prod-qty" value="1" min="1" max="20" required>
+                    </div>
+                </div>
+
+                <div id="returning-user-msg" style="display: none;">
+                    <p class="welcome-back">Welcome back! We have automatically reloaded your saved profile details.</p>
+                    <button type="button" class="btn-secondary" onclick="enableEditDetails()">Edit Delivery Address & Profile</button>
+                </div>
+
+                <div class="payment-note">
+                    <p><strong>Please Note:</strong> Orders are processed instantly. Secure home delivery will be arranged promptly.</p>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submit-order-btn">Confirm Purchase</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleCartModal()">&times;</span>
+            <h2>Your Book Cart</h2>
+            <div id="cart-items-list"></div>
+            <div class="cart-total" id="cart-total-price">Total: ₹0</div>
+            <button class="btn-primary" onclick="checkoutCart()">Proceed to Order</button>
+        </div>
+    </div>
+
+    <div class="modal" id="tracking-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleTrackingModal()">&times;</span>
+            <h2>📦 Track Your Book Order</h2>
+            <p style="font-size: 13px; color: #aaa; margin-bottom: 15px;">Enter your phone number to check current shipping/delivery logs.</p>
+            <div style="display: flex; gap: 8px;">
+                <input type="tel" id="track-phone-input" placeholder="Registered Phone Number" style="margin-bottom:0;">
+                <button class="btn-primary" onclick="trackCustomerOrders()" style="width: auto; padding: 0 20px;">Search</button>
+            </div>
+            <div id="tracking-results-container" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="admin-modal">
+        <div class="modal-content admin-content" style="max-width: 700px;">
+            <span class="close-btn" onclick="closeAdminPanel()">&times;</span>
+            <h2>Kesa Book Store Admin Control Panel</h2>
+            
+            <div class="admin-tabs" style="display: flex; gap: 10px; margin: 15px 0;">
+                <button class="btn-secondary active" id="tab-add-btn" onclick="switchAdminTab('add')">Add Product</button>
+                <button class="btn-secondary" id="tab-manage-btn" onclick="switchAdminTab('manage')">Manage Catalog (${allProducts.length})</button>
+                <button class="btn-secondary" id="tab-orders-btn" onclick="switchAdminTab('orders')">Orders Panel</button>
+            </div>
+
+            <div id="admin-section-add">
+                <form id="admin-add-product-form">
+                    <h3>Upload New Kids Book Asset</h3>
+                    <input type="text" id="prod-title" placeholder="Book Title / Name" required>
+                    <input type="number" id="prod-price" placeholder="Price Per Copy (₹)" required>
+                    <label style="color: #b3b3b3; font-size: 13px; display: block; margin-bottom: 5px;">Select Book Images (Cover & Pages):</label>
+                    <input type="file" id="prod-images" accept="image/*" multiple required>
+                    <button type="submit" class="btn-primary">Publish & Alert Users</button>
+                </form>
+            </div>
+
+            <div id="admin-section-manage" style="display: none;">
+                <h3>Active Inventory Catalog</h3>
+                <div id="admin-products-list" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+
+            <div id="admin-section-orders" style="display: none;">
+                <h3>Customer Orders Log & Logistics Alerts</h3>
+                <div id="orders-list" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
