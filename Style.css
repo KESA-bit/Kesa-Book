@@ -1,0 +1,105 @@
+:root {
+    --bg-dark: #0f1111; 
+    --bg-surface: #232f3e;
+    --bg-card: #1a1a1a;
+    --primary-color: #ff9900; 
+    --text-main: #FFFFFF;
+    --text-muted: #CCCCCC;
+    --accent-red: #cc0c39;
+    --success-green: #2ecc71;
+}
+
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Poppins', sans-serif; touch-action: manipulation; 
+}
+
+body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 50px; }
+
+/* Realtime Announcement Banner Layout */
+.announcement-bar {
+    background-color: var(--primary-color); color: #000;
+    padding: 10px 5%; text-align: center; font-weight: 600; font-size: 13px;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 110; animation: slideDown 0.4s ease;
+}
+.close-announcement-btn { background: none; border: none; font-size: 20px; font-weight: bold; cursor: pointer; }
+
+header {
+    background-color: #131921; padding: 15px 5%;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 100;
+}
+.logo { font-size: 26px; font-weight: 700; color: var(--primary-color); letter-spacing: 1px; }
+.nav-right { display: flex; align-items: center; gap: 15px; }
+
+.track-btn {
+    background-color: transparent; border: 1px solid var(--primary-color);
+    color: var(--primary-color); padding: 6px 12px; border-radius: 4px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+}
+
+.cart-icon-container { position: relative; cursor: pointer; font-size: 24px; }
+#cart-count {
+    position: absolute; top: -8px; right: -10px;
+    background-color: var(--primary-color); color: black;
+    font-size: 12px; font-weight: bold; padding: 2px 6px; border-radius: 50%;
+}
+
+.intro { text-align: center; padding: 25px 15px 10px 15px; }
+.intro h1 span { color: var(--primary-color); }
+.intro p { color: var(--text-muted); max-width: 600px; margin: 8px auto 0 auto; font-size: 13px; }
+
+/* Amazon 2 Column Layout Frame */
+.products-container {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; padding: 12px;
+}
+@media (min-width: 768px) {
+    .products-container { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+}
+
+.product-card {
+    background-color: var(--bg-card); border: 1px solid #2a2a2a;
+    border-radius: 8px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between;
+}
+.product-image { width: 100%; height: 160px; object-fit: contain; background-color: #111; border-radius: 4px; cursor: pointer; }
+@media (min-width: 768px) { .product-image { height: 240px; } }
+
+.product-title { font-size: 13px; font-weight: 500; margin: 8px 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.product-price { color: var(--primary-color); font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+
+.btn-primary { background-color: var(--primary-color); color: black; border: none; padding: 10px; font-weight: 600; border-radius: 4px; cursor: pointer; width: 100%; font-size: 13px; }
+.btn-secondary { background-color: #2a2a2a; color: white; border: 1px solid #444; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; overflow-y: auto; }
+.modal-content { background-color: #161616; padding: 20px; border-radius: 8px; max-width: 500px; width: 92%; position: relative; margin: auto; border: 1px solid #333; }
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: var(--text-muted); z-index: 20; }
+
+.slider-container { position: relative; width: 100%; height: 280px; overflow: hidden; border-radius: 6px; margin-bottom: 15px; background-color: #000; }
+.slider { display: flex; transition: transform 0.3s ease-in-out; height: 100%; width: 100%; }
+.slider img { min-width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s ease; }
+.slider.zoomed img { transform: scale(1.6); cursor: zoom-out; }
+
+.slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; padding: 10px 14px; cursor: pointer; z-index: 10; }
+.prev { left: 5px; } .next { right: 5px; }
+.zoom-lock-badge { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.75); color: var(--primary-color); padding: 6px 12px; font-size: 12px; border-radius: 20px; cursor: pointer; z-index: 15; }
+
+form input, form textarea, select { width: 100%; padding: 12px; margin-bottom: 12px; background-color: #222; border: 1px solid #3a3a3a; color: white; border-radius: 4px; font-size: 14px; }
+.quantity-container { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; background: #222; padding: 10px 12px; border-radius: 4px; border: 1px solid #3a3a3a; }
+.quantity-container input { width: 70px; margin-bottom: 0; text-align: center; }
+
+.payment-note { background: #222; padding: 12px; border-left: 3px solid var(--primary-color); margin-bottom: 15px; font-size: 12px; color: var(--text-muted); }
+.cart-total { font-size: 18px; font-weight: bold; color: var(--primary-color); margin: 15px 0; text-align: right; }
+.loading { text-align: center; color: var(--text-muted); padding: 20px; width: 100%; grid-column: 1 / -1; }
+
+/* Admin and Tracking Dynamic Cards */
+.admin-item-card, .order-card, .tracking-card { background: #222; padding: 15px; border-radius: 6px; margin-bottom: 12px; border: 1px solid #333; }
+.status-badge { display: inline-block; padding: 3px 8px; font-size: 11px; font-weight: bold; border-radius: 3px; text-transform: uppercase; margin-top: 5px; }
+.status-pending { background-color: #e67e22; color: #fff; }
+.status-shipped { background-color: #3498db; color: #fff; }
+.status-out { background-color: #9b59b6; color: #fff; }
+.status-delivered { background-color: var(--success-green); color: #fff; }
+
+@keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
